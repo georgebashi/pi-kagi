@@ -1,8 +1,38 @@
 {
   "name": "pi-kagi",
   "version": "0.1.0",
-  "description": "Pi coding agent extension providing web search via Kagi's API",
+  "description": "Pi coding agent extension providing web search and summarization via Kagi's API",
+  "author": "georgebashi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georgebashi/pi-kagi.git"
+  },
+  "homepage": "https://github.com/georgebashi/pi-kagi#readme",
+  "bugs": {
+    "url": "https://github.com/georgebashi/pi-kagi/issues"
+  },
+  "keywords": [
+    "pi",
+    "pi-extension",
+    "kagi",
+    "web-search",
+    "summarize",
+    "coding-agent"
+  ],
+  "files": [
+    "index.ts",
+    "web-search.ts",
+    "summarize.ts",
+    "kagi-api.ts",
+    "README.md"
+  ],
   "pi": {
     "extensions": ["./index.ts"]
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-coding-agent": "*",
+    "@mariozechner/pi-tui": "*",
+    "@sinclair/typebox": "*"
   }
 }

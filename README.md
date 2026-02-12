@@ -1,6 +1,6 @@
 # pi-kagi
 
-A [pi](https://github.com/badlogic/pi) coding agent extension that adds a `web_search` tool backed by [Kagi's Search API](https://help.kagi.com/kagi/api/search.html).
+A [pi](https://github.com/badlogic/pi) coding agent extension that adds `web_search` and `summarize` tools backed by [Kagi's API](https://help.kagi.com/kagi/api/overview.html).
 
 ## Setup
 
@@ -43,20 +43,33 @@ Search the web using one or more queries. Returns ranked results with titles, UR
 |------|------|-------------|
 | `queries` | `string[]` | One or more search queries |
 
-**Example usage by the LLM:**
+**Example:**
 
 ```
 web_search({ queries: ["kagi search API documentation"] })
 ```
 
-Results are formatted as a numbered list:
+Results are formatted as a numbered list with title, URL, and snippet. Output is automatically truncated to stay within context limits.
+
+### `summarize`
+
+Summarize content from a URL. Works with web pages, PDFs, videos, podcasts, and other document types.
+
+**Parameters:**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `url` | `string` | URL to summarize |
+| `summary_type` | `"summary" \| "takeaway"` | Paragraph prose (default) or bullet points |
+| `engine` | `"cecil" \| "agnes"` | `cecil` (default, fast general-purpose) or `agnes` (formal, technical, analytical) |
+| `target_language` | `string` | Language code for output (e.g., `"EN"`, `"DE"`, `"JA"`) |
+
+**Example:**
 
 ```
-1. Kagi Search API - Developer Documentation
-   https://help.kagi.com/kagi/api/search.html
-   Complete reference for the Kagi Search API including authentication...
-
-2. ...
+summarize({ url: "https://example.com/long-article", summary_type: "takeaway", engine: "agnes" })
 ```
 
-Output is automatically truncated to stay within context limits. If truncated, the full output is saved to a temp file.
+## License
+
+MIT
