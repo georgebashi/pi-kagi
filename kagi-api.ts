@@ -32,12 +32,15 @@ interface KagiApiResponse {
 	error?: Array<{ code: number; msg: string }>;
 }
 
-export async function kagiSearch(queries: string[], apiKey: string): Promise<KagiSearchResponse> {
+export async function kagiSearch(queries: string[], apiKey: string, limit?: number): Promise<KagiSearchResponse> {
 	const allResults: KagiSearchResult[] = [];
 
 	for (const query of queries) {
 		const url = new URL(KAGI_SEARCH_URL);
 		url.searchParams.set("q", query);
+		if (limit !== undefined) {
+			url.searchParams.set("limit", String(limit));
+		}
 
 		let response: Response;
 		try {

@@ -32,12 +32,14 @@ const WebSearchParams = Type.Object({
 	queries: Type.Array(Type.String({ description: "A search query" }), {
 		description: "One or more concise, keyword-focused search queries",
 	}),
+	verbose: Type.Optional(Type.Boolean({ description: "Return more results per query" })),
 });
 
 interface WebSearchDetails {
 	queries: string[];
 	resultCount: number;
 	results?: KagiSearchResult[];
+	verbose?: boolean;
 	truncation?: TruncationResult;
 	fullOutputPath?: string;
 	error?: string;
@@ -61,7 +63,7 @@ export function createWebSearchTool() {
 
 		async execute(
 			_toolCallId: string,
-			params: { queries: string[] },
+			params: { queries: string[]; verbose?: boolean },
 			_signal: AbortSignal | undefined,
 			_onUpdate: any,
 			_ctx: any,
@@ -80,7 +82,8 @@ export function createWebSearchTool() {
 				};
 			}
 
-			const response = await kagiSearch(params.queries, apiKey);
+			const limit = params.verbose ? 20 : undefined;
+			const response = await kagiSearch(params.queries, apiKey, limit);
 
 			if (!response.ok) {
 				return {
@@ -108,6 +111,7 @@ export function createWebSearchTool() {
 				queries: params.queries,
 				resultCount: response.results.length,
 				results: response.results,
+				verbose: params.verbose,
 			};
 
 			let resultText = truncation.content;
